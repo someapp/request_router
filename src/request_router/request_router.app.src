@@ -5,10 +5,14 @@
   {registered, [request_router]},
   {applications, [
                   kernel,
-                  stdlib,
+                  stdlib, 
+		  inets, 
+		  crypto, 
+		  gproc
                   sasl,
                   os_mon
                  ]},
   {mod, { request_router_app, []}},
-  {env, []}
+  {env, []},
+  {modules, [app_util]}
  ]}.
