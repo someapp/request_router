@@ -1,0 +1,15 @@
+= Request Router 
+
+Intended as a gateway to a cloud of participated worker process.
+Each worker process is a container of other standalone application
+or process. This router intend to also load balance and route to
+the most appropriate set of workers. 
+ 
+This is part of a bigger project.
+
+
+
+
+
+= Installation and compilation
+
