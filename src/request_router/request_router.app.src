@@ -1,11 +1,13 @@
 {application, request_router,
  [
-  {description, ""},
+  {description, "Request router and reverse proxy for load balancing to worker process"},
   {vsn, "1"},
-  {registered, []},
+  {registered, [request_router]},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  sasl,
+                  os_mon
                  ]},
   {mod, { request_router_app, []}},
   {env, []}
