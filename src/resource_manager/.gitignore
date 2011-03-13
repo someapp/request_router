@@ -1,0 +1,7 @@
+/deps/*
+ebin/*.beam
+rel/request_router
+*.*~
+*.beam
+*.dump
+*.crash_dump
