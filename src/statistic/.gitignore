@@ -1,0 +1,7 @@
+deps/*
+ebin/*beam
+rel/statistic
+*.*~
+*.beam
+*.dump
+*.crash_dump
