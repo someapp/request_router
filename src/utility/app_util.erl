@@ -16,7 +16,6 @@
 -include_lib("eunit/include/eunit.hrl").
 -endif.
 
-
 ensure_app_start(AppName) when is_atom(AppName) ->
   case application:start(AppName) of 
        ok -> ok;

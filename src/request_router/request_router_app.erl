@@ -13,4 +13,5 @@ start(_StartType, _StartArgs) ->
     request_router_sup:start_link().
 
 stop(_State) ->
+    request_router_sup:terminate_child(),
     ok.
