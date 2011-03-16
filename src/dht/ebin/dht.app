@@ -1,8 +1,0 @@
-{application,dht,
-             [{description,[]},
-              {vsn,"1"},
-              {registered,[]},
-              {applications,[kernel,stdlib]},
-              {mod,{dht_app,[]}},
-              {env,[]},
-              {modules,[dht_app,dht_sup]}]}.
