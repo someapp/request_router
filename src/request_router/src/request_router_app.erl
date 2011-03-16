@@ -9,7 +9,7 @@
 %% Application callbacks
 %% ===================================================================
 start()->
-    start
+    start(normal, []).
 
 start(_StartType, _StartArgs) ->
     load_config(),
@@ -17,7 +17,7 @@ start(_StartType, _StartArgs) ->
     request_router_sup:start_link().
 
 stop(_State) ->
-    cleanup().
+    cleanup(),
     request_router_sup:terminate_child(),
     ok.
 
@@ -28,12 +28,12 @@ load_config()->
 configuration_spec()->
     [].
     
-ensure_started([]) -> o;.
+ensure_started([]) -> ok;
 ensure_started(Apps) when is_list(Apps)->
     app_util:ensure_started(Apps).   
 
 cleanup()->
-    
+    ok.
 
 
 
