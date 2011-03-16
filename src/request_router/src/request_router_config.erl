@@ -8,6 +8,8 @@
          client_protocol/0,
          log_dir/0,
          log_name/0,
+         connection_timeout/0,
+         req_process_timeout/0,
          profiling/0 
         ]).
 
@@ -52,10 +54,10 @@ profiling()->
 %% private functions
 
 init([])->
-    
+    .
 
 handle_call({})->
-
+    
 handle_call({})->
 
 handle_call({})->
