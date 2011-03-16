@@ -2,8 +2,14 @@
 
 -behaviour(application).
 
+%% Request router going always to be start up with a custom config
+%% A default config same name as module is assumed if no config supplied
+-export([start/0, start/1]).
+
 %% Application callbacks
--export([start/0, start/2, stop/1]).
+-export([start/2, stop/1]).
+
+-define (?dependent_apps, [inets, sasl, os_mon, gproc]).
 
 %% ===================================================================
 %% Application callbacks
@@ -11,19 +17,44 @@
 start()->
     start(normal, []).
 
-start(_StartType, _StartArgs) ->
-    load_config(),
-    ensure_started([inets, sasl, os_mon, gproc]),
-    request_router_sup:start_link().
+% App config already in erlang list of terms. load it in environment
+start(Config) when is_list(Config)->
+     load_config(Config),
+     ensure_started(?dependent_apps),
+         
+ 
+%% ===================================================================
+%% 
+%%
+%% ===================================================================
+start(_StartType, _StartArgs) ->    
+    ensure_started(?dependent_apps),
+    Ret = case request_router_sup:start_link() of
+         {ok, Pid} -> 
+              ok = 
+         
+         {error, Reason} -> {error, Reason}
+    end.
 
 stop(_State) ->
     cleanup(),
     request_router_sup:terminate_child(),
     ok.
 
-
 load_config()->
     app_util_config:read_config([], configuration_spec()).
+
+consider_profiling() ->
+    case should_profile() of
+	    true ->
+            eprof:start(),
+            eprof:start_profiling([self()]);
+	    false ->
+	        ignore
+    end.
+
+should_profile()-> 
+    request_router_config:
 
 configuration_spec()->
     [].
@@ -32,6 +63,7 @@ ensure_started([]) -> ok;
 ensure_started(Apps) when is_list(Apps)->
     app_util:ensure_started(Apps).   
 
+% Put all the external resource clean up in right order here
 cleanup()->
     ok.
 
