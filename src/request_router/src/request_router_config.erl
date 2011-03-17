@@ -3,6 +3,7 @@
 -behaviour(gen_server).
 
 -include("../include/log.hrl").
+-include("../include/type.hrl").
 
 -export([start/0, stop/0,
          listening_port/0,
@@ -65,13 +66,13 @@ client_protocol()->
     
 %% @doc Get logger file name. Default is request_router_log.log
 %% @end   
--spec log_name() -> file:name().    
+-spec log_name() -> filename().    
 log_name()->
     call(log_name).
  
 %% @doc Get folder path of storing log files. Default is he current working directory
 %% @end   
--spec log_dir() -> file:name().    
+-spec log_dir() -> dirname().    
 log_dir()->
     call(log_dir).
 

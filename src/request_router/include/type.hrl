@@ -1,0 +1,2 @@
+-type filename()::file:name().
+-type dirname()::file:name().
