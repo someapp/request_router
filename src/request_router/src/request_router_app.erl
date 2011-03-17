@@ -8,8 +8,9 @@
 
 %% Application callbacks
 -export([start/2, stop/1]).
+-include("log.hrl").
 
--define (?dependent_apps, [inets, sasl, os_mon, gproc]).
+-define (Dependent_apps, [inets, sasl, os_mon, gproc]).
 
 %% ===================================================================
 %% Application callbacks
@@ -20,15 +21,16 @@ start()->
 % App config already in erlang list of terms. load it in environment
 start(Config) when is_list(Config)->
      load_config(Config),
-     ensure_started(?dependent_apps),
-         
+     ensure_started(?Dependent_apps)
+     .
  
 %% ===================================================================
 %% 
 %%
 %% ===================================================================
-start(_StartType, _StartArgs) ->    
-    ensure_started(?dependent_apps),
+start(_StartType, _StartArgs) ->   
+    ?INFO("Starting Request Router ... "), 
+    ensure_started(?Dependent_apps),
     Ret = case request_router_sup:start_link() of
          {ok, Pid} -> 
               ok = 
@@ -37,6 +39,7 @@ start(_StartType, _StartArgs) ->
     end.
 
 stop(_State) ->
+    ?INFO("Stopping Request Router"),
     cleanup(),
     request_router_sup:terminate_child(),
     ok.
@@ -47,14 +50,14 @@ load_config()->
 consider_profiling() ->
     case should_profile() of
 	    true ->
-            eprof:start(),
-            eprof:start_profiling([self()]);
+            	eprof:start(),
+            	eprof:start_profiling([self()]);
 	    false ->
 	        ignore
     end.
 
 should_profile()-> 
-    request_router_config:
+    request_router_config:should_profile().
 
 configuration_spec()->
     [].
