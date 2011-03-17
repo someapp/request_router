@@ -66,34 +66,63 @@ should_profile()->
 
 %% private functions
 
+config_spec() ->
+    [
+      required(listening_port),
+      required(max_queued_reqs),
+      reqired(client_protocol),
+      optional(log_dir, "./log"),
+      optional(log_name, "request_router_log.log"),
+      optional(should_profile, false)
+    ].
+
+% @doc Initialize the configs into memory
+% @end
 init([])->
-    
-    .
+    {ok, #state{ conf = app_config_util:read_config([]) }}.
+
+% @doc Create a list of {configKey, value}
+% @end
+read_config(Config) ->     
+   [F(Config) || F <- config_spec()].    
     
 call(Message) when is_atom(Message) ->
     gen_server:call(?MODULE, {get_param, Message}).
-    
+
+% @doc Getting optional key or use default
+% @end    
 optional_key(KeyName, Default) when is_atom(KeyName) ->
     app_config_util:optional(?APPNAME, KeyName, Default).
-
+    
+% @doc Getting required key
+% @end
 required_key(KeyName) when is_atom(KeyName) -> 
-    app_config_util:required(?APPNAME, KeyName).    	
+   app_config_util:required(?APPNAME, KeyName).    	
 
 handle_call({get_param, listening_port}, From, State)->
+   handle_message(listening_port, State).    
     
-handle_call({get_param, max_queued_request}, From, State)->
+handle_call({get_param, max_queued_request}, State)->
+   handle_message(max_queued_request, State).
 
 handle_call({get_param, client_protocol}, From, State)->
+   handle_message(client_protocol, State).
 
 handle_call({get_param, log_name}, From, State)->
+   handle_message(log_name, State).
 
 handle_call({get_param, log_dir}, From, State)->
+   handle_message(log_dir, State).  
 
-handle_call({get_param, should_profile}, From State)->
-   
+handle_call({get_param, should_profile}, From,  State)->
+   handle_message(should_profile, State).
 
 handle_call({get_param, Message}, _From, _State) ->
     error({unsupported_key, Message}).
+    
+handle_message(Key, #state { conf = Conf } = State) ->
+    Value = proplists:get_value(P, Conf),
+    {reply, Value, State}.
 
 %% @doc Ignore all unspported Message
 %% @end
