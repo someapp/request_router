@@ -219,8 +219,8 @@ read_config_test_()->
      fun config_setup/0,
      fun cleanup/1,
      [
-       {"Read config with required and optional keys",    
-          fun read_config_with_required_optional_config/0}
+ %      {"Read config with required and optional keys",    
+ %         fun read_config_with_required_optional_config/0}
      ]
     }
   }.
