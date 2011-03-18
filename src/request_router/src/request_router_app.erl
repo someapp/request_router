@@ -28,13 +28,17 @@ start(Config) when is_list(Config)->
 %% @doc All the required dependent services are started here. All optional
 %% services are also listed. 
 %% Required services: 
-%% request_router_listener - for listening to incoming inet traffic
-%% request_router_acceptor - for dealing with incoming requests
-%% request_router_logger - for all logging events 
+%% request_router_listener - inet traffic listener
+%% request_router_dht - stores the pids and meta data of workers; data periodic update
+%% request_resource_manager - deals with how to choose optimal set of availble workers
+%% request_router_acceptor - take over ownership of request, handler it over to 
+%%                           processing handler
+%% request_router_logger - as logging events sink 
 %% request_router_eventmanager - as plugin socket for new event handler
-%% request_router_counter - for storing statistic counters for local service 
+%% request_router_counter - stores statistic counters for local service 
 %% Optional service:
-%% request_router_profiler - for computing resource profiling 
+%% request_router_profiler - for computing resource profiling
+%% request_router_rest - restful interface for operational and maintaince functions 
 %% @end
 %% ===================================================================
 start(_StartType, _StartArgs) ->   
