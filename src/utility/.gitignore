@@ -1,6 +1,7 @@
 deps/*
 ebin/*
 ebin/*beam
+*.eunit/*
 rel/utility
 *.*~
 *.beam
