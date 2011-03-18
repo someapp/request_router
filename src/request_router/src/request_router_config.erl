@@ -2,8 +2,8 @@
 
 -behaviour(gen_server).
 
--include("../include/log.hrl").
--include("../include/type.hrl").
+-include("log.hrl").
+-include("type.hrl").
 
 -export([start/0, stop/0,
          listening_port/0,
@@ -97,7 +97,7 @@ should_profile()->
 %%====================================================================
 
 %% private functions
-
+-spec confg_spec()-> [{atom(), term()}].
 config_spec() ->
     [
       required_key(listening_port),
@@ -132,6 +132,8 @@ optional_key(KeyName, Default) when is_atom(KeyName) ->
 % @end
 required_key(KeyName) when is_atom(KeyName) -> 
    app_config_util:required(?APPNAME, KeyName).    	
+
+% ======== Normal User supplied gen_server Stuff ================
 
 handle_call({get_param, listening_port}, _From, State)->
    handle_message(listening_port, State);    
