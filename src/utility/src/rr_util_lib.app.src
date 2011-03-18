@@ -5,7 +5,8 @@
   {vsn, "1"},
   {registered, []},
   {modules, [app_config_util,
-  	     app_util]},
+  	         app_util,
+  	         app_folder_util]},
   {applications, [
                   kernel,
                   stdlib, 
