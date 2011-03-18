@@ -59,8 +59,6 @@ consider_profiling() ->
 should_profile()-> 
     request_router_config:should_profile().
 
-configuration_spec()->
-    [].
     
 ensure_started([]) -> ok;
 ensure_started(Apps) when is_list(Apps)->
