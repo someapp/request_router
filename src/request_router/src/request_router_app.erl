@@ -31,7 +31,7 @@ start(Config) when is_list(Config)->
 %% 
 %% Required services: 
 %% request_router_listener (local) - inet traffic listener 
-%% request_router_dht (global) - stores the pids and meta data of workers; 
+%% request_router_dht (global) - stores the pids and *querable meta data* of workers; 
 %%                            data periodic update
 %% request_resource_manager (local) - deals with how to choose optimal 
 %%                           set of availble workers
