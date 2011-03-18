@@ -1,8 +1,0 @@
-{application,request_router,
-             [{description,"Request router and reverse proxy for load balancing to worker process"},
-              {vsn,"1"},
-              {registered,[request_router]},
-              {applications,[kernel,stdlib,inets,crypto,gproc,sasl,os_mon]},
-              {mod,{request_router_app,[]}},
-              {env,[]},
-              {modules,[request_router_app,request_router_sup]}]}.
