@@ -10,7 +10,7 @@
 -export([start/2, stop/1]).
 -include("log.hrl").
 
--define (Dependent_apps, [inets, sasl, os_mon, gproc]).
+-define (DEPENDANT_APPS, [inets, sasl, os_mon, gproc]).
 
 %% ===================================================================
 %% Application callbacks
@@ -21,16 +21,25 @@ start()->
 % App config already in erlang list of terms. load it in environment
 start(Config) when is_list(Config)->
      load_config(Config),
-     ensure_started(?Dependent_apps)
+     ensure_started(?DEPENDANT_APPS),
      .
  
 %% ===================================================================
-%% 
-%%
+%% @doc All the required dependent services are started here. All optional
+%% services are also listed. 
+%% Required services: 
+%% request_router_listener - for listening to incoming inet traffic
+%% request_router_acceptor - for dealing with incoming requests
+%% request_router_logger - for all logging events 
+%% request_router_eventmanager - as plugin socket for new event handler
+%% request_router_counter - for storing statistic counters for local service 
+%% Optional service:
+%% request_router_profiler - for computing resource profiling 
+%% @end
 %% ===================================================================
 start(_StartType, _StartArgs) ->   
     ?INFO("Starting Request Router ... "), 
-    ensure_started(?Dependent_apps),
+    ensure_started(?DEPENDANT_APPS),
     Ret = case request_router_sup:start_link() of
          {ok, Pid} -> 
               ok = 
@@ -43,6 +52,11 @@ stop(_State) ->
     cleanup(),
     request_router_sup:terminate_child(),
     ok.
+
+required_serivce(ServiceName) when is_atom(ServiceName) ->
+
+optional_service(ServiceName) when is_atom(ServiceName)->
+  
 
 load_config()->
     app_util_config:read_config([], configuration_spec()).
