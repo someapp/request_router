@@ -1,5 +1,6 @@
 deps/*
 ebin/*
+*.app
 ebin/*beam
 *.eunit/*
 rel/utility
