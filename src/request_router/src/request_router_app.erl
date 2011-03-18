@@ -8,6 +8,7 @@
 
 %% Application callbacks
 -export([start/2, stop/1]).
+
 -include("log.hrl").
 
 -define (DEPENDANT_APPS, [inets, sasl, os_mon, gproc]).
@@ -20,8 +21,9 @@ start()->
 
 % App config already in erlang list of terms. load it in environment
 start(Config) when is_list(Config)->
-     load_config(Config),
-     ensure_started(?DEPENDANT_APPS),
+        
+    ensure_started(?DEPENDANT_APPS),
+     
      .
  
 %% ===================================================================
@@ -62,13 +64,34 @@ stop(_State) ->
     ok.
 
 required_serivce(ServiceName) when is_atom(ServiceName) ->
-
+    ?CHILD().
+    
 optional_service(ServiceName) when is_atom(ServiceName)->
-  
+    case request_router_config
 
 load_config()->
     app_util_config:read_config([], configuration_spec()).
 
+    
+ensure_started([]) -> ok;
+ensure_started(Apps) when is_list(Apps)->
+    app_util:ensure_started(Apps).   
+    
+
+% Put all the external resource clean up in right order here
+cleanup()->
+    ok.
+    
+% ================= Extra Parsed in Config values ======    
+load_config([])->
+    ok.    
+
+load_config([Key|Rest) ->
+    ok = application:set_env("").
+    load_config(Rest).    
+    
+    
+% ================= Profiling Section ==================
 consider_profiling() ->
     case should_profile() of
 	    true ->
@@ -81,14 +104,12 @@ consider_profiling() ->
 should_profile()-> 
     request_router_config:should_profile().
 
-    
-ensure_started([]) -> ok;
-ensure_started(Apps) when is_list(Apps)->
-    app_util:ensure_started(Apps).   
-
-% Put all the external resource clean up in right order here
-cleanup()->
-    ok.
+profile_output() ->
+    eprof:stop_profiling(),
+    eprof:log("procs.profile"),
+    eprof:analyze(procs),
+    eprof:log("total.profile"),
+    eprof:analyze(total).    
 
 
 
