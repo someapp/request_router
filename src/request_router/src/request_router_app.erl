@@ -26,19 +26,23 @@ start(Config) when is_list(Config)->
  
 %% ===================================================================
 %% @doc All the required dependent services are started here. All optional
-%% services are also listed. 
+%% services are also listed. Services classified as local and global meaning
+%% named-service with visibility in local VM versus globally visible.
+%% 
 %% Required services: 
-%% request_router_listener - inet traffic listener
-%% request_router_dht - stores the pids and meta data of workers; data periodic update
-%% request_resource_manager - deals with how to choose optimal set of availble workers
-%% request_router_acceptor - take over ownership of request, handler it over to 
+%% request_router_listener (local) - inet traffic listener 
+%% request_router_dht (global) - stores the pids and meta data of workers; 
+%%                            data periodic update
+%% request_resource_manager (local) - deals with how to choose optimal 
+%%                           set of availble workers
+%% request_router_acceptor (local)- take over ownership of request, handler it over to 
 %%                           processing handler
-%% request_router_logger - as logging events sink 
-%% request_router_eventmanager - as plugin socket for new event handler
-%% request_router_counter - stores statistic counters for local service 
+%% request_router_logger (local)- as logging events sink 
+%% request_router_eventmanager (local)- as plugin socket for new event handler
+%% request_router_counter (local) - stores statistic counters for local service 
 %% Optional service:
-%% request_router_profiler - for computing resource profiling
-%% request_router_rest - restful interface for operational and maintaince functions 
+%% request_router_profiler (local) - for computing resource profiling
+%% request_router_rest (global) - restful interface for operational and maintaince functions 
 %% @end
 %% ===================================================================
 start(_StartType, _StartArgs) ->   
