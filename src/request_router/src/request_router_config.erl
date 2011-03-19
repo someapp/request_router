@@ -2,6 +2,7 @@
 
 -behaviour(gen_server).
 
+-include("common_defines.hrl").
 -include("log.hrl").
 -include("type.hrl").
 
@@ -26,7 +27,6 @@
          handle_info/2]).
 
 -define(SERVER, ?MODULE).
--define(APPNAME, request_router).
   
 -record(state, { conf :: [{atom(), term()}]}).  
 
@@ -97,14 +97,23 @@ should_profile()->
 %%====================================================================
 
 %% private functions
+current_folder()->
+    app_folder_util:cwd().
+
+default_log_folder()->
+    current_folder() ++ "/log".
+
+default_log_filename()->
+    atom_to_list(?TOPAPPNAME) ++ "_log.log".
+    
 -spec confg_spec()-> [{atom(), term()}].
 config_spec() ->
     [
       required_key(listening_port),
       required_key(max_queued_reqs),
       required_key(client_protocol),
-      optional_key(log_dir, "./log"),
-      optional_key(log_name, "request_router_log.log"),
+      optional_key(log_dir, default_log_folder()),
+      optional_key(log_name, default_log_filename()),
       optional_key(connection_timeout, 5),
       optional_key(req_process_timeout, 5),
       optional_key(should_profile, false)
@@ -126,12 +135,12 @@ call(Message) when is_atom(Message) ->
 % @doc Getting optional key or use default
 % @end    
 optional_key(KeyName, Default) when is_atom(KeyName) ->
-    app_config_util:optional(?APPNAME, KeyName, Default).
+    app_config_util:optional(?TOPAPPNAME, KeyName, Default).
     
 % @doc Getting required key
 % @end
 required_key(KeyName) when is_atom(KeyName) -> 
-   app_config_util:required(?APPNAME, KeyName).    	
+   app_config_util:required(?TOPAPPNAME, KeyName).    	
 
 % ======== Normal User supplied gen_server Stuff ================
 
