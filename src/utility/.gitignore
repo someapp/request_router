@@ -1,5 +1,6 @@
 deps/*
 ebin/*
+*/ebin/*
 *.app
 ebin/*beam
 *.eunit/*
