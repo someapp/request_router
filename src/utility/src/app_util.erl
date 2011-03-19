@@ -40,7 +40,7 @@ ensure_stopped([App|Rest]) when is_atom(App) ->
 %% =========== unit tests ===========
 -ifdef(TEST).
 
-assert_app_running_state_test()->
+assert_app_running_state_test_()->
   {inorder,
     { setup,
       fun setup/0,
@@ -51,17 +51,24 @@ assert_app_running_state_test()->
         {"Ensure starting undefined app complains", fun app_start_undef_app/0},
         {"Ensure stopping started app stops success", fun app_stop/0},
         {"Ensure stopping stopped app has no effect", fun app_already_stop/0},
-        {"Ensure stopping undefined app has no effect", fun app_stop_undef_app/0}
+        {"Ensure stopping undefined app has no effect", fun app_stop_undef_app/0},
+        {"Ensure starting empty app list ok", fun app_start_empty_list/0},
+        {"Ensure stopping empty app list ok", fun app_stop_empty_list/0}
       ]
     }
   }.
-
 
 setup() ->
  ok.
 
 cleanup(_State) -> 
  ok.
+
+app_stop_empty_list()->
+  ?assertMatch(ok, ensure_stopped([])).
+  
+app_start_empty_list()->
+  ?assertMatch(ok, ensure_started([])).
 
 app_should_clean_start() ->
   ok = ensure_app_stop(sasl),  
