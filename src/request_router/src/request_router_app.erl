@@ -10,6 +10,8 @@
 -export([start/2, stop/1]).
 
 -include("log.hrl").
+-include("supervisor.hrl").
+-include("type.hrl").
 
 -define (DEPENDANT_APPS, [inets, sasl, os_mon, gproc]).
 
